@@ -3,9 +3,7 @@
 #include <vector>
 #include <optional>
 #include <queue>
-#include <stdexcept>
 #include <limits>
-#include <ranges>
 #include <algorithm>
 
 #include"Point.h"

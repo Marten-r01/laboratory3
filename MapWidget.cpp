@@ -43,6 +43,7 @@ void drawWaves(QPainter& p, const QRect& r, const QColor& c) {
 
 void drawDunes(QPainter& p, const QRect& r) {
     QPen pen(QColor("#c9a24a"), 2);
+    p.save();
     pen.setCapStyle(Qt::RoundCap);
     p.setPen(pen);
 
@@ -54,6 +55,7 @@ void drawDunes(QPainter& p, const QRect& r) {
         path.moveTo(left, y);
         path.quadTo(mid, y - r.height()/6, right, y);
         p.drawPath(path);
+        p.restore();
     };
 
     arc(r.top() + r.height()*4/10);
@@ -62,6 +64,7 @@ void drawDunes(QPainter& p, const QRect& r) {
 
 void drawTree(QPainter& p, const QRect& r) {
     // Simple stylized tree
+    p.save();
     p.setPen(Qt::NoPen);
 
     QRect trunk(r.left() + r.width()*45/100, r.top() + r.height()*55/100,
@@ -81,9 +84,11 @@ void drawTree(QPainter& p, const QRect& r) {
             << QPoint(r.left() + r.width()*18/100, r.top() + r.height()*65/100)
             << QPoint(r.right() - r.width()*18/100, r.top() + r.height()*65/100);
     p.drawPolygon(canopy2);
+    p.restore();
 }
 
 void drawFlag(QPainter& p, const QRect& cellRect, const QColor& flagColor) {
+    p.save();
     p.setPen(Qt::NoPen);
     p.setBrush(QColor("#333333"));
     // pole
@@ -99,6 +104,7 @@ void drawFlag(QPainter& p, const QRect& cellRect, const QColor& flagColor) {
         << QPoint(cellRect.left() + cellRect.width()*80/100, pole.top() + cellRect.height()*12/100)
         << QPoint(pole.right(), pole.top() + cellRect.height()*24/100);
     p.drawPolygon(tri);
+    p.restore();
 }
 }
 
@@ -208,17 +214,17 @@ void MapWidget::paintEvent(QPaintEvent*) {
 
             // Path overlay
             if (onPath(pt)) {
-                p.fillRect(cr, QColor(255, 255, 255, 70));
+               p.fillRect(cr, QColor(255, 255, 255, 70));
             }
 
             p.setPen(gridPen);
             p.drawRect(cr);
 
             // Flags must be above overlay
-            if (start_ && *start_ == pt) {
+            if (start_ == pt ) {
                 drawFlag(p, cr, QColor("#13a113"));
             }
-            if (goal_ && *goal_ == pt) {
+            if (goal_ == pt) {
                 drawFlag(p, cr, QColor("#d12020"));
             }
         }
